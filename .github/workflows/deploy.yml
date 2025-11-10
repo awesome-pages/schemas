@@ -41,9 +41,14 @@ jobs:
             - name: Generate JSON Schemas
               run: pnpm run generate
 
+            - name: Create output directory structure
+              run: |
+                  mkdir -p _site
+                  cp -r domain _site/
+
             - name: Create index.html
               run: |
-                  cat > domain/index.html << 'EOF'
+                  cat > _site/index.html << 'EOF'
                   <!DOCTYPE html>
                   <html lang="en">
                   <head>
@@ -144,7 +149,7 @@ jobs:
                           <div class="schemas">
                               <h2 style="margin-bottom: 15px; color: #333;">Available Schemas</h2>
                               <div class="schema-item">
-                                  <a href="./v1.json">Domain Schema</a>
+                                  <a href="./domain/v1.json">Domain Schema</a>
                                   <span class="version">v1</span>
                               </div>
                           </div>
@@ -168,7 +173,7 @@ jobs:
             - name: Upload artifact
               uses: actions/upload-pages-artifact@v3
               with:
-                  path: "./domain"
+                  path: "./_site"
 
     deploy:
         environment:
